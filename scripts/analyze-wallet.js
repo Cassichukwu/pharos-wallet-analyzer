@@ -1,9 +1,10 @@
 const { ethers } = require("ethers");
 
-const PHAROS_RPC = "https://atlantic.dplabs-internal.com";
-const PHAROS_CHAIN_ID = 688689;
-const PHAROS_EXPLORER = "https://testnet.pharosscan.xyz";
-const PHAROS_CURRENCY = "PHRS";
+const PHAROS_RPC = "https://rpc.pharos.xyz";
+const PHAROS_CHAIN_ID = 1672;
+const PHAROS_EXPLORER = "https://pharosscan.xyz";
+const PHAROS_CURRENCY = "PROS";
+
 
 async function analyzeWallet(address) {
   if (!ethers.isAddress(address)) {

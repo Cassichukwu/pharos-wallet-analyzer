@@ -1,9 +1,9 @@
 const { ethers } = require("ethers");
 
-const PHAROS_RPC = "https://atlantic.dplabs-internal.com";
-const PHAROS_CHAIN_ID = 688689;
-const PHAROS_EXPLORER = "https://atlantic.pharosscan.xyz";
-const PHAROS_CURRENCY = "PHRS";
+const PHAROS_RPC = "https://rpc.pharos.xyz";
+const PHAROS_CHAIN_ID = 1672;
+const PHAROS_EXPLORER = "https://pharosscan.xyz";
+const PHAROS_CURRENCY = "PROS";
 
 const KNOWN_SELECTORS = {
   "0xa9059cbb": "ERC-20 Token Transfer",
@@ -26,17 +26,17 @@ async function explainTransaction(txHash) {
   }
 
   console.log("Looking up transaction:", txHash);
-  console.log("Connecting to Pharos Testnet...\n");
+  console.log("Connecting to Pharos Mainnet...\n");
 
   const provider = new ethers.JsonRpcProvider(PHAROS_RPC, {
     chainId: PHAROS_CHAIN_ID,
-    name: "pharos-testnet",
+    name: "pharos-mainnet",
   });
 
   const tx = await provider.getTransaction(txHash);
 
   if (!tx) {
-    console.log("Transaction not found on Pharos Testnet.");
+    console.log("Transaction not found on Pharos Mainnet.");
     return;
   }
 
