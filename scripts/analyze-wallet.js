@@ -13,11 +13,11 @@ async function analyzeWallet(address) {
   }
 
   console.log("🔍 Analyzing wallet:", address);
-  console.log("🌐 Connecting to Pharos Testnet...\n");
+  console.log("🌐 Connecting to Pharos Mainnet...\n");
 
   const provider = new ethers.JsonRpcProvider(PHAROS_RPC, {
     chainId: PHAROS_CHAIN_ID,
-    name: "pharos-testnet",
+    name: "pharos-mainnet",
   });
 
   const balanceWei = await provider.getBalance(address);
