@@ -1,19 +1,12 @@
 # Pharos Wallet Analyzer — Agent Skill
 
-An AI Agent Skill for the Pharos Agent Centre that enables agents to analyze
-wallets and decode transactions on the Pharos Network using natural language.
-
----
+An AI Agent Skill for the Pharos Agent Centre that enables agents to analyze wallets, decode transactions, track gas prices and view transaction history on the Pharos Network using natural language.
 
 ## Skill Name
-`pharos-wallet-analyzer`
+pharos-wallet-analyzer
 
 ## Short Description
-Lets an AI agent inspect any Pharos wallet or transaction hash and return a
-clean, human-readable analysis — including native balance, transaction count,
-transaction type, gas cost, and risk signals.
-
----
+Lets an AI agent inspect any Pharos wallet or transaction hash and return a clean, human-readable analysis including native balance, transaction count, transaction type, gas cost, risk signals, live gas prices and transaction history.
 
 ## What It Does
 
@@ -31,56 +24,36 @@ Given a transaction hash, the agent can:
 - Report gas cost in PROS
 - Produce a plain-English explanation of what happened
 
----
+### Gas Tracker
+The agent can:
+- Fetch live gas price on Pharos Mainnet
+- Estimate cost for simple transfer, token transfer and contract call
+- Show network status (cheap, normal, moderate, expensive)
+
+### Transaction History
+Given a wallet address, the agent can:
+- Show recent transactions sent and received
+- Display block number, timestamp, value and direction
+- Link directly to explorer for full history
 
 ## How to Use
 
-### 1. Clone the repo
+1. Clone the repo and install dependencies:
 git clone https://github.com/Cassichukwu/pharos-wallet-analyzer.git
 cd pharos-wallet-analyzer
-
-### 2. Install dependencies
 npm install
 
-### 3. Analyze a wallet
+2. Analyze a wallet:
 node scripts/analyze-wallet.js 0xYourWalletAddress
 
-### 4. Explain a transaction
+3. Explain a transaction:
 node scripts/explain-tx.js 0xYourTxHash
 
----
+4. Check live gas prices:
+node scripts/gas-tracker.js
 
-## Example Output
-
-### Wallet Report
-===================================
-        PHAROS WALLET REPORT
-===================================
-Address      : 0xd8dA...6045
-Balance      : 0.277844 PROS
-Transactions : 0
-Is Contract  : No
-Risk Signals :
-   -> Empty wallet — no transactions yet
-===================================
-
-### Transaction Report
-===================================
-    PHAROS TRANSACTION REPORT
-===================================
-Status   : Success
-Block    : 8483391
-From     : 0x6B16...5555
-To       : 0x530D...b147
-Value    : 0.000000 PROS
-Type     : Contract Interaction
-Gas Cost : 0.00035902 PROS
-
-What happened:
-  0x6B16...5555 interacted with 0x530D...b147 on Pharos.
-===================================
-
----
+5. View transaction history:
+node scripts/tx-history.js 0xYourWalletAddress
 
 ## Network Details
 - Network : Pharos Pacific Ocean Mainnet
@@ -89,18 +62,12 @@ What happened:
 - Explorer : https://pharosscan.xyz
 - Currency : PROS
 
----
-
 ## Tech Stack
 - JavaScript (Node.js)
 - ethers.js v6
 
----
-
 ## Dependencies
-- ethers ^6.11.1
-
----
+- ethers 6.11.1
 
 ## Notes
 - No API key required
