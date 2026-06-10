@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { margin: 0; background: transparent; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c" width="480" height="480"></canvas>
+<script>
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+// Background
+ctx.fillStyle = "#0A0F1E";
+ctx.beginPath();
+ctx.arc(240, 240, 240, 0, Math.PI * 2);
+ctx.fill();
+
+// Outer ring
+ctx.strokeStyle = "#00D4FF";
+ctx.lineWidth = 5;
+ctx.beginPath();
+ctx.arc(240, 240, 228, 0, Math.PI * 2);
+ctx.stroke();
+
+// Bars
+const bars = [
+  { x: 160, y: 230, w: 25, h: 70 },
+  { x: 195, y: 200, w: 25, h: 100 },
+  { x: 230, y: 215, w: 25, h: 85 },
+  { x: 265, y: 175, w: 25, h: 125 },
+];
+ctx.fillStyle = "#00D4FF";
+bars.forEach(bar => {
+  ctx.beginPath();
+  ctx.roundRect(bar.x, bar.y, bar.w, bar.h, 3);
+  ctx.fill();
+});
+
+// Base line
+ctx.strokeStyle = "#00D4FF";
+ctx.lineWidth = 2.5;
+ctx.beginPath();
+ctx.moveTo(150, 305);
+ctx.lineTo(300, 305);
+ctx.stroke();
+
+// Magnifier
+ctx.strokeStyle = "#FFD700";
+ctx.lineWidth = 4;
+ctx.beginPath();
+ctx.arc(268, 200, 28, 0, Math.PI * 2);
+ctx.stroke();
+ctx.beginPath();
+ctx.moveTo(289, 221);
+ctx.lineTo(310, 242);
+ctx.stroke();
+
+// PHAROS text
+ctx.fillStyle = "#00D4FF";
+ctx.font = "bold 42px Arial";
+ctx.textAlign = "center";
+ctx.fillText("PHAROS", 240, 360);
+
+// WALLET ANALYZER
+ctx.fillStyle = "#FFFFFF";
+ctx.font = "20px Arial";
+ctx.globalAlpha = 0.9;
+ctx.fillText("WALLET ANALYZER", 240, 395);
+
+// Tagline
+ctx.fillStyle = "#00D4FF";
+ctx.font = "13px Arial";
+ctx.globalAlpha = 0.65;
+ctx.fillText("ONCHAIN INTELLIGENCE", 240, 425);
+
+ctx.globalAlpha = 1.0;
+</script>
+</body>
+</html>

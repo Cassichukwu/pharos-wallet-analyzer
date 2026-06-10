@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharos Wallet Analyzer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0A0F1E; color: #fff; font-family: Arial, sans-serif; }
+
+  header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    border-bottom: 1px solid #00D4FF33;
+  }
+  header h1 { font-size: 42px; color: #00D4FF; letter-spacing: 4px; }
+  header p { color: #aaa; margin-top: 12px; font-size: 16px; }
+  .badge {
+    display: inline-block;
+    background: #00D4FF22;
+    border: 1px solid #00D4FF;
+    color: #00D4FF;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    margin-top: 14px;
+  }
+
+  .section { padding: 60px 20px; max-width: 900px; margin: 0 auto; }
+  .section h2 { font-size: 26px; color: #00D4FF; margin-bottom: 30px; text-align: center; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+  .card {
+    background: #0D1B3E;
+    border: 1px solid #00D4FF44;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+  .card:hover { border-color: #00D4FF; }
+  .card .icon { font-size: 36px; margin-bottom: 12px; }
+  .card h3 { color: #00D4FF; font-size: 16px; margin-bottom: 8px; }
+  .card p { color: #aaa; font-size: 13px; line-height: 1.6; }
+
+  .commands { display: flex; flex-direction: column; gap: 16px; }
+  .command-box {
+    background: #0D1B3E;
+    border: 1px solid #00D4FF44;
+    border-radius: 10px;
+    padding: 20px 24px;
+  }
+  .command-box h3 { color: #FFD700; font-size: 15px; margin-bottom: 10px; }
+  .command-box code {
+    display: block;
+    background: #000;
+    color: #00D4FF;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+  .command-box p { color: #aaa; font-size: 13px; margin-top: 10px; }
+
+  .network {
+    background: #0D1B3E;
+    border: 1px solid #00D4FF44;
+    border-radius: 12px;
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    text-align: center;
+  }
+  .network-item label { color: #aaa; font-size: 12px; display: block; margin-bottom: 6px; }
+  .network-item span { color: #00D4FF; font-size: 15px; font-weight: bold; }
+
+  .cta {
+    text-align: center;
+    padding: 60px 20px;
+    border-top: 1px solid #00D4FF33;
+  }
+  .cta h2 { color: #00D4FF; font-size: 28px; margin-bottom: 16px; }
+  .cta p { color: #aaa; margin-bottom: 30px; }
+  .btn {
+    display: inline-block;
+    background: #00D4FF;
+    color: #0A0F1E;
+    padding: 14px 36px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    text-decoration: none;
+    margin: 6px;
+    transition: opacity 0.3s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn.outline {
+    background: transparent;
+    border: 2px solid #00D4FF;
+    color: #00D4FF;
+  }
+
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: #444;
+    font-size: 13px;
+    border-top: 1px solid #00D4FF22;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>PHAROS WALLET ANALYZER</h1>
+  <p>An AI Agent Skill for the Pharos Network — Onchain Intelligence at your fingertips</p>
+  <span class="badge">Pharos Pacific Ocean Mainnet</span>
+</header>
+
+<div class="section">
+  <h2>What This Skill Does</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🔍</div>
+      <h3>Wallet Analysis</h3>
+      <p>Check any wallet's PROS balance, transaction count and risk signals instantly.</p>
+    </div>
+    <div class="card">
+      <div class="icon">📜</div>
+      <h3>Transaction Explainer</h3>
+      <p>Decode any transaction hash into plain English — type, status, gas cost and more.</p>
+    </div>
+    <div class="card">
+      <div class="icon">⛽</div>
+      <h3>Gas Tracker</h3>
+      <p>Get live gas prices and estimated transaction costs on Pharos Mainnet.</p>
+    </div>
+    <div class="card">
+      <div class="icon">📊</div>
+      <h3>TX History</h3>
+      <p>View recent sent and received transactions for any wallet address.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>How to Use</h2>
+  <div class="commands">
+    <div class="command-box">
+      <h3>1. Install</h3>
+      <code>git clone https://github.com/Cassichukwu/pharos-wallet-analyzer.git && cd pharos-wallet-analyzer && npm install</code>
+    </div>
+    <div class="command-box">
+      <h3>2. Analyze a Wallet</h3>
+      <code>node scripts/analyze-wallet.js 0xYourWalletAddress</code>
+      <p>Returns balance, transaction count, contract detection and risk signals.</p>
+    </div>
+    <div class="command-box">
+      <h3>3. Explain a Transaction</h3>
+      <code>node scripts/explain-tx.js 0xYourTxHash</code>
+      <p>Returns transaction type, status, gas cost and plain English explanation.</p>
+    </div>
