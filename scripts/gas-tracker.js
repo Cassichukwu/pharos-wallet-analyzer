@@ -6,24 +6,18 @@ const PHAROS_EXPLORER = "https://pharosscan.xyz";
 const PHAROS_CURRENCY = "PROS";
 
 async function getGasInfo() {
-  console.log("⛽ Fetching Pharos Mainnet Gas Info...\n");
-
   const provider = new ethers.JsonRpcProvider(PHAROS_RPC, {
     chainId: PHAROS_CHAIN_ID,
     name: "pharos-mainnet",
   });
 
-  // Fetch gas price and latest block
   const [feeData, blockNumber] = await Promise.all([
     provider.getFeeData(),
     provider.getBlockNumber(),
   ]);
 
-  // Format gas prices
   const gasPriceGwei = parseFloat(ethers.formatUnits(feeData.gasPrice, "gwei")).toFixed(4);
-  const gasPriceWei = feeData.gasPrice.toString();
 
-  // Estimate costs for common transaction types
   const SIMPLE_TRANSFER_GAS = 21000n;
   const TOKEN_TRANSFER_GAS = 65000n;
   const CONTRACT_INTERACTION_GAS = 100000n;
@@ -32,33 +26,34 @@ async function getGasInfo() {
   const tokenCost = parseFloat(ethers.formatEther(feeData.gasPrice * TOKEN_TRANSFER_GAS)).toFixed(8);
   const contractCost = parseFloat(ethers.formatEther(feeData.gasPrice * CONTRACT_INTERACTION_GAS)).toFixed(8);
 
-  // Gas speed recommendation
-  let speed = "";
   const gasPriceNum = parseFloat(gasPriceGwei);
-  if (gasPriceNum < 1) {
-    speed = "🟢 Very Cheap — Great time to transact!";
-  } else if (gasPriceNum < 10) {
-    speed = "🟡 Normal — Good time to transact";
-  } else if (gasPriceNum < 50) {
-    speed = "🟠 Moderate — Consider waiting";
-  } else {
-    speed = "🔴 Expensive — Network is congested";
-  }
+  let networkStatus = "";
+  if (gasPriceNum < 1) networkStatus = "very_cheap";
+  else if (gasPriceNum < 10) networkStatus = "normal";
+  else if (gasPriceNum < 50) networkStatus = "moderate";
+  else networkStatus = "expensive";
 
-  // Print result
-  console.log("═══════════════════════════════════");
-  console.log("     PHAROS GAS TRACKER REPORT     ");
-  console.log("═══════════════════════════════════");
-  console.log(`📦 Latest Block   : ${blockNumber}`);
-  console.log(`⛽ Gas Price      : ${gasPriceGwei} Gwei`);
-  console.log(`🔢 Gas Price (Wei): ${gasPriceWei}`);
-  console.log(`\n💸 Estimated Transaction Costs:`);
-  console.log(`   → Simple Transfer  : ${simpleCost} ${PHAROS_CURRENCY}`);
-  console.log(`   → Token Transfer   : ${tokenCost} ${PHAROS_CURRENCY}`);
-  console.log(`   → Contract Call    : ${contractCost} ${PHAROS_CURRENCY}`);
-  console.log(`\n📊 Network Status : ${speed}`);
-  console.log(`🔗 Explorer       : ${PHAROS_EXPLORER}`);
-  console.log("═══════════════════════════════════");
+  const result = {
+    success: true,
+    skill: "pharos-wallet-analyzer",
+    action: "gas-tracker",
+    data: {
+      latestBlock: blockNumber,
+      gasPriceGwei: gasPriceGwei,
+      networkStatus: networkStatus,
+      estimatedCosts: {
+        simpleTransfer: { gas: 21000, cost: simpleCost, currency: PHAROS_CURRENCY },
+        tokenTransfer: { gas: 65000, cost: tokenCost, currency: PHAROS_CURRENCY },
+        contractCall: { gas: 100000, cost: contractCost, currency: PHAROS_CURRENCY },
+      },
+      explorerUrl: PHAROS_EXPLORER,
+      network: "Pharos Pacific Ocean Mainnet",
+      chainId: PHAROS_CHAIN_ID,
+    },
+    timestamp: new Date().toISOString()
+  };
+
+  console.log(JSON.stringify(result, null, 2));
 }
 
 getGasInfo().catch(console.error);

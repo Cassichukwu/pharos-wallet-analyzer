@@ -21,12 +21,12 @@ const KNOWN_SELECTORS = {
 
 async function explainTransaction(txHash) {
   if (!/^0x[0-9a-fA-F]{64}$/.test(txHash)) {
-    console.log("Invalid transaction hash.");
+    console.log(JSON.stringify({
+      success: false,
+      error: "Invalid transaction hash. Must be 66 characters starting with 0x."
+    }));
     return;
   }
-
-  console.log("Looking up transaction:", txHash);
-  console.log("Connecting to Pharos Mainnet...\n");
 
   const provider = new ethers.JsonRpcProvider(PHAROS_RPC, {
     chainId: PHAROS_CHAIN_ID,
@@ -36,22 +36,25 @@ async function explainTransaction(txHash) {
   const tx = await provider.getTransaction(txHash);
 
   if (!tx) {
-    console.log("Transaction not found on Pharos Mainnet.");
+    console.log(JSON.stringify({
+      success: false,
+      error: "Transaction not found on Pharos Mainnet."
+    }));
     return;
   }
 
   const receipt = await provider.getTransactionReceipt(txHash);
 
-  let status = "Pending";
-  let gasUsed = "N/A";
-  let gasCost = "N/A";
+  let status = "pending";
+  let gasUsed = null;
+  let gasCost = null;
 
   if (receipt) {
-    status = receipt.status === 1 ? "Success" : "Failed";
+    status = receipt.status === 1 ? "success" : "failed";
     gasUsed = receipt.gasUsed.toString();
     if (tx.gasPrice) {
       const gasCostWei = receipt.gasUsed * tx.gasPrice;
-      gasCost = parseFloat(ethers.formatEther(gasCostWei)).toFixed(8) + " " + PHAROS_CURRENCY;
+      gasCost = parseFloat(ethers.formatEther(gasCostWei)).toFixed(8);
     }
   }
 
@@ -69,7 +72,7 @@ async function explainTransaction(txHash) {
 
   const value = parseFloat(ethers.formatEther(tx.value)).toFixed(6);
   const shortFrom = tx.from.slice(0, 6) + "..." + tx.from.slice(-4);
-  const shortTo = tx.to ? tx.to.slice(0, 6) + "..." + tx.to.slice(-4) : "a new contract";
+  const shortTo = tx.to ? tx.to.slice(0, 6) + "..." + tx.to.slice(-4) : "new contract";
 
   let explanation = shortFrom + " interacted with " + shortTo + " on Pharos.";
   if (txType === "Native Token Transfer") {
@@ -79,30 +82,41 @@ async function explainTransaction(txHash) {
   } else if (txType === "ERC-20 Token Transfer") {
     explanation = shortFrom + " transferred tokens to " + shortTo + ".";
   } else if (txType === "ERC-20 Token Approval") {
-    explanation = shortFrom + " approved " + shortTo + " to spend tokens on their behalf.";
+    explanation = shortFrom + " approved " + shortTo + " to spend tokens.";
   }
 
-  console.log("===================================");
-  console.log("    PHAROS TRANSACTION REPORT");
-  console.log("===================================");
-  console.log("Tx Hash  : " + txHash.slice(0, 20) + "...");
-  console.log("Status   : " + status);
-  console.log("Block    : " + (tx.blockNumber || "Pending"));
-  console.log("From     : " + tx.from);
-  console.log("To       : " + (tx.to || "Contract Deployment"));
-  console.log("Value    : " + value + " " + PHAROS_CURRENCY);
-  console.log("Type     : " + txType);
-  console.log("Gas Used : " + gasUsed);
-  console.log("Gas Cost : " + gasCost);
-  console.log("Explorer : " + PHAROS_EXPLORER + "/tx/" + txHash);
-  console.log("\nWhat happened:");
-  console.log("  " + explanation);
-  console.log("===================================");
+  const result = {
+    success: true,
+    skill: "pharos-wallet-analyzer",
+    action: "explain-tx",
+    data: {
+      hash: txHash,
+      status: status,
+      blockNumber: tx.blockNumber,
+      from: tx.from,
+      to: tx.to || "Contract Deployment",
+      value: value,
+      currency: PHAROS_CURRENCY,
+      type: txType,
+      gasUsed: gasUsed,
+      gasCost: gasCost,
+      explanation: explanation,
+      explorerUrl: PHAROS_EXPLORER + "/tx/" + txHash,
+      network: "Pharos Pacific Ocean Mainnet",
+      chainId: PHAROS_CHAIN_ID,
+    },
+    timestamp: new Date().toISOString()
+  };
+
+  console.log(JSON.stringify(result, null, 2));
 }
 
 const txHash = process.argv[2];
 if (!txHash) {
-  console.log("Usage: node scripts/explain-tx.js <transaction_hash>");
+  console.log(JSON.stringify({
+    success: false,
+    error: "Missing argument. Usage: node scripts/explain-tx.js <tx_hash>"
+  }));
 } else {
   explainTransaction(txHash).catch(console.error);
 }
